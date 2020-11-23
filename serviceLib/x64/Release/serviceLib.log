@@ -1,7 +1,20 @@
-﻿LINK : warning LNK4098: Standardbibliothek "LIBCMT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
+﻿  configFileUtil.cpp
+  getFileAsString.cpp
+  logUtil.cpp
+  methodGetListOf.cpp
+  methodGetProcess.cpp
+  methodGetService.cpp
+  methodSaveProcess.cpp
+  methodSaveWsdl.cpp
+  opcuaMethode.cpp
+  opcuaServer.cpp
+  open62541Util.cpp
+  saveStringAsXml.cpp
+  serviceLib.cpp
+  util.cpp
+  Previous IPDB not found, fall back to full compilation.
+LINK : warning LNK4098: Standardbibliothek "LIBCMT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
   Code wird generiert.
-  3 of 966 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  All 681 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Codegenerierung ist abgeschlossen.
   serviceLib.vcxproj -> D:\Arbeit\MSVisualStudio_Workspace\masterarbeit\serviceLib\x64\Release\serviceLib.exe
