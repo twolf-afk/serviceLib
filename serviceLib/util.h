@@ -20,6 +20,8 @@ public:
 
 	static char* stringToChar(std::string);
 
+	static std::vector<std::string> getFilesInDirectory(std::string directory);
+
 };
 
 #endif

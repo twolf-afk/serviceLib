@@ -1,10 +1,13 @@
 #include "util.h"
 
+#include "logUtil.h"
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 
 #include <ctime>
+#include <filesystem>
 
 std::string util::getDateAndTime()
 {
@@ -50,4 +53,24 @@ char* util::stringToChar(std::string string)
 	char* Char = new char[lengthOfChar];
 	strcpy_s(Char, lengthOfChar, string.c_str());
 	return Char;
+}
+
+std::vector<std::string> util::getFilesInDirectory(std::string directory)
+{
+	logUtil::writeLogMessageToConsoleAndFile("info", typeid(util).name(), __LINE__, "Directory: " + directory);
+
+	std::vector<std::string> files;
+
+	for (const auto& entry : std::filesystem::directory_iterator(directory))
+	{
+
+		std::string file = entry.path().string().c_str();
+
+		std::vector<std::string> fileParts = util::splitString(file, "'/");
+
+		files.push_back(fileParts[fileParts.size()-1]);
+
+	}
+
+	return files;
 }
