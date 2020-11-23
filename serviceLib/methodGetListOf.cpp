@@ -43,7 +43,7 @@ static UA_StatusCode getList
     for (int i = 0; i < files.size(); i++)
     {
 
-        fileList += files.at(i) + "; ";
+        fileList += files.at(i) + ";";
 
     }
 
