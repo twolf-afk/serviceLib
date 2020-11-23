@@ -8,9 +8,9 @@
 void logUtil::writeLogMessageToConsoleAndFile(std::string logLevel, std::string Class, std::int32_t line, std::string message)
 {
 
-	std::string strLogMes = createLogMessage(logLevel, Class, line, message);
+	std::string logMessage = createLogMessage(logLevel, Class, line, message);
 
-	std::cout << strLogMes;
+	std::cout << logMessage;
 
 
 	std::string logFileName = "logFile.txt";
@@ -21,7 +21,7 @@ void logUtil::writeLogMessageToConsoleAndFile(std::string logLevel, std::string 
 		std::ofstream logFile;
 		logFile.open(logFileName, std::ios_base::app);
 
-		logFile << strLogMes;
+		logFile << logMessage;
 		logFile.close();
 	}
 }

@@ -1,6 +1,7 @@
 #include "methodGetProcess.h"
 
 #include "logUtil.h"
+#include "getFileAsString.h"
 
 static UA_StatusCode getProcess
 (
@@ -12,28 +13,37 @@ static UA_StatusCode getProcess
     UA_Variant* output
 )
 {
-    UA_String* ptrInput = (UA_String*)input->data;
-    UA_String inputValue;
-    UA_String_init(&inputValue);
-
     logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetProcess).name(), __LINE__, "getProcess was called");
+
+    UA_String* ptrInput = (UA_String*)input->data;
+    UA_String uaStrProcessName;
+    UA_String_init(&uaStrProcessName);
 
     if (ptrInput->length > 0)
     {
-        inputValue.data = (UA_Byte*)UA_realloc(inputValue.data, inputValue.length + ptrInput->length);
-        memcpy(&inputValue.data[inputValue.length], ptrInput->data, ptrInput->length);
-        inputValue.length += ptrInput->length;
+        uaStrProcessName.data = (UA_Byte*)UA_realloc(uaStrProcessName.data, uaStrProcessName.length + ptrInput->length);
+        memcpy(&uaStrProcessName.data[uaStrProcessName.length], ptrInput->data, ptrInput->length);
+        uaStrProcessName.length += ptrInput->length;
     }
 
-    char* chValue = (char*)UA_malloc(sizeof(char) * inputValue.length + 1);
-    memcpy(chValue, inputValue.data, inputValue.length);
-    chValue[inputValue.length] = '\0';
+    char* chProcessName = (char*)UA_malloc(sizeof(char) * uaStrProcessName.length + 1);
+    memcpy(chProcessName, uaStrProcessName.data, uaStrProcessName.length);
+    chProcessName[uaStrProcessName.length] = '\0';
 
-    std::string value(chValue);
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetProcess).name(), __LINE__, "Get Process: " + value);
+    std::string processNameAsString(chProcessName);
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetProcess).name(), __LINE__, "Get Process: " + processNameAsString);
 
-    UA_Variant_setScalarCopy(output, &inputValue, &UA_TYPES[UA_TYPES_STRING]);
-    UA_String_clear(&inputValue);
+    std::string processAsString = getFileAsString::getFile("../../processes/" + processNameAsString);
+    const char* process = processAsString.c_str();
+
+    UA_String result;
+    UA_String_init(&result);
+
+    result.length = strlen(process);
+    result.data = (UA_Byte*)process;
+
+    UA_Variant_setScalarCopy(output, &result, &UA_TYPES[UA_TYPES_STRING]);
+    UA_String_clear(&uaStrProcessName);
 
 
     return UA_STATUSCODE_GOOD;

@@ -5,6 +5,7 @@
 #include "methodGetProcess.h"
 #include "methodGetService.h"
 #include "methodSaveProcess.h"
+#include "methodGetListOf.h"
 
 #include <open62541/server_config_default.h>
 
@@ -13,12 +14,20 @@ opcuaServer::opcuaServer()
 	logUtil::writeLogMessageToConsoleAndFile("info", typeid(opcuaServer).name(), __LINE__, "Create Server Instance");
 
 	server = UA_Server_new();
-	UA_ServerConfig_setDefault(UA_Server_getConfig(server));
+	UA_ServerConfig* config = UA_Server_getConfig(server);
+	UA_ServerConfig_setDefault(config);
+
+	UA_ServerConfig_setMinimal(config, 2, NULL);
+	UA_String_clear(&config->applicationDescription.applicationUri);
+	config->applicationDescription.applicationUri = UA_String_fromChars("urn:serviceLib");
+
+
 	
 	methodSaveWsdl::createMethod(server);
 	methodGetService::createMethod(server);
 	methodSaveProcess::createMethod(server);
 	methodGetProcess::createMethod(server);
+	methodGetListOf::createMethod(server);
 
 }
 

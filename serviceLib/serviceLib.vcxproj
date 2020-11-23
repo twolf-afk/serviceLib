@@ -131,6 +131,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Program Files %28x86%29\open62541\include;D:\Arbeit\MSVisualStudio_Workspace\masterarbeit\serviceLib\libs\boost.1.72.0.0\lib\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,24 +143,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="configFileUtil.cpp" />
+    <ClCompile Include="getFileAsString.cpp" />
     <ClCompile Include="logUtil.cpp" />
+    <ClCompile Include="methodGetListOf.cpp" />
     <ClCompile Include="methodGetProcess.cpp" />
     <ClCompile Include="methodGetService.cpp" />
     <ClCompile Include="methodSaveProcess.cpp" />
     <ClCompile Include="methodSaveWsdl.cpp" />
     <ClCompile Include="opcuaMethode.cpp" />
     <ClCompile Include="opcuaServer.cpp" />
+    <ClCompile Include="open62541Util.cpp" />
+    <ClCompile Include="saveStringAsXml.cpp" />
     <ClCompile Include="serviceLib.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="configFileUtil.h" />
+    <ClInclude Include="getFileAsString.h" />
     <ClInclude Include="logUtil.h" />
+    <ClInclude Include="methodGetListOf.h" />
     <ClInclude Include="methodGetProcess.h" />
     <ClInclude Include="methodGetService.h" />
     <ClInclude Include="methodSaveProcess.h" />
     <ClInclude Include="methodSaveWsdl.h" />
     <ClInclude Include="opcuaMethode.h" />
     <ClInclude Include="opcuaServer.h" />
+    <ClInclude Include="open62541Util.h" />
+    <ClInclude Include="saveStringAsXml.h" />
     <ClInclude Include="serviceLib.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>

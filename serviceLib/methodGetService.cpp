@@ -1,6 +1,7 @@
 #include "methodGetService.h"
 
 #include "logUtil.h"
+#include "getFileAsString.h"
 
 static UA_StatusCode getService
 (
@@ -12,28 +13,37 @@ static UA_StatusCode getService
     UA_Variant* output
 )
 {
-    UA_String* ptrInput = (UA_String*)input->data;
-    UA_String inputValue;
-    UA_String_init(&inputValue);
-
     logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetService).name(), __LINE__, "getService was called");
+
+    UA_String* ptrInput = (UA_String*)input->data;
+    UA_String uaStrServiceName;
+    UA_String_init(&uaStrServiceName);
 
     if (ptrInput->length > 0)
     {
-        inputValue.data = (UA_Byte*)UA_realloc(inputValue.data, inputValue.length + ptrInput->length);
-        memcpy(&inputValue.data[inputValue.length], ptrInput->data, ptrInput->length);
-        inputValue.length += ptrInput->length;
+        uaStrServiceName.data = (UA_Byte*)UA_realloc(uaStrServiceName.data, uaStrServiceName.length + ptrInput->length);
+        memcpy(&uaStrServiceName.data[uaStrServiceName.length], ptrInput->data, ptrInput->length);
+        uaStrServiceName.length += ptrInput->length;
     }
 
-    char* chValue = (char*)UA_malloc(sizeof(char) * inputValue.length + 1);
-    memcpy(chValue, inputValue.data, inputValue.length);
-    chValue[inputValue.length] = '\0';
+    char* chServiceName = (char*)UA_malloc(sizeof(char) * uaStrServiceName.length + 1);
+    memcpy(chServiceName, uaStrServiceName.data, uaStrServiceName.length);
+    chServiceName[uaStrServiceName.length] = '\0';
 
-    std::string value(chValue);
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetService).name(), __LINE__, "Get Service: " + value);
+    std::string serviceName(chServiceName);
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetService).name(), __LINE__, "Get Service: " + serviceName);
 
-    UA_Variant_setScalarCopy(output, &inputValue, &UA_TYPES[UA_TYPES_STRING]);
-    UA_String_clear(&inputValue);
+    std::string serviceAsString = getFileAsString::getFile("../../services/" + serviceName);
+    const char* service = serviceAsString.c_str();
+
+    UA_String result;
+    UA_String_init(&result);
+
+    result.length = strlen(service);
+    result.data = (UA_Byte*)service;
+
+    UA_Variant_setScalarCopy(output, &result, &UA_TYPES[UA_TYPES_STRING]);
+    UA_String_clear(&uaStrServiceName);
 
 
     return UA_STATUSCODE_GOOD;

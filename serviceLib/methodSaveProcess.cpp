@@ -1,6 +1,8 @@
 #include "methodSaveProcess.h"
 
 #include "logUtil.h"
+#include "open62541Util.h"
+#include "saveStringAsXml.h"
 
 static UA_StatusCode saveProcess
 (
@@ -12,29 +14,17 @@ static UA_StatusCode saveProcess
     UA_Variant* output
 )
 {
-    UA_String* ptrInput = (UA_String*)input->data;
-    UA_String inputValue;
-    UA_String_init(&inputValue);
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodSaveProcess).name(), __LINE__, "saveProcessAsXml was called");
 
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodSaveProcess).name(), __LINE__, "saveProcess was called");
+    UA_String* firstInput = (UA_String*)input[0].data;
+    UA_String* secondInput = (UA_String*)input[1].data;
 
-    if (ptrInput->length > 0)
-    {
-        inputValue.data = (UA_Byte*)UA_realloc(inputValue.data, inputValue.length + ptrInput->length);
-        memcpy(&inputValue.data[inputValue.length], ptrInput->data, ptrInput->length);
-        inputValue.length += ptrInput->length;
-    }
+    std::string filename = open62541Util::uaStringPtrToStdString(firstInput);
+    std::string text = open62541Util::uaStringPtrToStdString(secondInput);
 
-    char* chValue = (char*)UA_malloc(sizeof(char) * inputValue.length + 1);
-    memcpy(chValue, inputValue.data, inputValue.length);
-    chValue[inputValue.length] = '\0';
+    saveStringAsXml::saveStringAsFile(text, "../processes/" + filename + ".xml");
 
-    std::string value(chValue);
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodSaveProcess).name(), __LINE__, "Save Process: " + value);
-
-    UA_Variant_setScalarCopy(output, &inputValue, &UA_TYPES[UA_TYPES_STRING]);
-    UA_String_clear(&inputValue);
-
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodSaveProcess).name(), __LINE__, "Save Process: " + filename);
 
     return UA_STATUSCODE_GOOD;
 
@@ -42,8 +32,13 @@ static UA_StatusCode saveProcess
 
 void methodSaveProcess::createMethod(UA_Server* server)
 {
-    char inputText[] = "Save Process as XML";
-    UA_Argument inputArgument = createStringArgument(inputText);
+    UA_Argument inputArguments[2];
+
+    char inputServiceName[] = "Process Name";
+    inputArguments[0] = createStringArgument(inputServiceName);
+
+    char inputText[] = "Text";
+    inputArguments[1] = createStringArgument(inputText);
 
     char outputText[] = "Result";
     UA_Argument outputArgument = createStringArgument(outputText);
@@ -59,6 +54,6 @@ void methodSaveProcess::createMethod(UA_Server* server)
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
         UA_QUALIFIEDNAME(1, methodeName),
         methodAttributes, &saveProcess,
-        1, &inputArgument, 1, &outputArgument, NULL, NULL
+        2, inputArguments, 1, &outputArgument, NULL, NULL
     );
 }
