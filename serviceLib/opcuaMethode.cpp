@@ -1,7 +1,7 @@
 #include "opcuaMethode.h"
 
-UA_Argument opcuaMethode::createStringArgument(char argumentName[])
-{
+UA_Argument opcuaMethode::createStringArgument(char argumentName[]) {
+
 	char locale[] = "de-GER";
 	char str[] = "A String";
 
@@ -15,8 +15,8 @@ UA_Argument opcuaMethode::createStringArgument(char argumentName[])
 	return argument;
 }
 
-UA_MethodAttributes opcuaMethode::createMethodAttributes(char methodName[])
-{
+UA_MethodAttributes opcuaMethode::createMethodAttributes(char methodName[]) {
+
 	char locale[] = "de-GER";
 
 	UA_MethodAttributes methodeAttribute = UA_MethodAttributes_default;

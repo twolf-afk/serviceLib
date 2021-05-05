@@ -6,8 +6,7 @@
 
 #include <string>
 
-class open62541Util
-{
+class open62541Util {
 
 public:
 

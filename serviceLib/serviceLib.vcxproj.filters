@@ -45,16 +45,16 @@
     <ClCompile Include="configFileUtil.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="getFileAsString.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="saveStringAsXml.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="open62541Util.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="methodGetListOf.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="methodSaveServiceOfProcess.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="methodGetServiceOfProcess.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,16 +89,16 @@
     <ClInclude Include="configFileUtil.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="getFileAsString.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="saveStringAsXml.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="open62541Util.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="methodGetListOf.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="methodSaveServiceOfProcess.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="methodGetServiceOfProcess.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

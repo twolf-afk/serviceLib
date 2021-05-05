@@ -2,8 +2,7 @@
 
 #define SERVICELIB_H
 
-class serviceLib
-{
+class serviceLib {
 };
 
 #endif

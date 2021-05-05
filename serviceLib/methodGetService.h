@@ -4,11 +4,12 @@
 
 #include "opcuaMethode.h"
 
-class methodGetService : public opcuaMethode
-{
+class methodGetService : public opcuaMethode {
+
 public:
 
 	static void createMethod(UA_Server* server);
+
 };
 
 #endif
