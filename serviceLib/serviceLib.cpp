@@ -5,8 +5,7 @@
 #include "opcuaServer.h"
 #include "util.h"
 
-int main()
-{
+int main() {
 	
 	logUtil::writeLogMessageToConsoleAndFile("info", typeid(serviceLib).name(), __LINE__, "Start Service Lib");
 
@@ -17,4 +16,5 @@ int main()
 	server.~opcuaServer();
 
 	logUtil::writeLogMessageToConsoleAndFile("info", typeid(serviceLib).name(), __LINE__, "Stopp Service Lib");
+
 }

@@ -1,4 +1,4 @@
-#include "methodGetService.h"
+#include "methodGetServiceOfProcess.h"
 
 #include "logUtil.h"
 #include "util.h"
@@ -13,16 +13,25 @@ static UA_StatusCode getService(
     const UA_Variant* input, size_t outputSize,
     UA_Variant* output) {
 
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetService).name(), __LINE__, "getService was called");
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetServiceOfProcess).name(), __LINE__, "getService was called");
 
-    UA_String* Input = (UA_String*)input->data;
-    std::string serviceName = open62541Util::uaStringPtrToStdString(Input);
+    UA_String* firstInput = (UA_String*)input[0].data;
+    std::string arguments = open62541Util::uaStringPtrToStdString(firstInput);
 
-    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetService).name(), __LINE__, "Get Service: " + serviceName);
+    std::vector<std::string> argumentVector = util::splitString(arguments, ";");
+
+    std::string serviceName = argumentVector[0];
+    std::string processName = argumentVector[1];
+
+    if (!util::stringContainsSubstring(serviceName, "wsdl")) {
+        serviceName += ".wsdl";
+    }
+
+    logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetServiceOfProcess).name(), __LINE__, "Get Service: " + serviceName + " of Process: " + processName);
 
     configFileUtil::confParam config = configFileUtil::readConfig();
 
-    std::string serviceAsString = util::getFile(config.pathToServices + serviceName);
+    std::string serviceAsString = util::getFile(config.pathToProcesses + processName + "/" + serviceName);
     const char* service = serviceAsString.c_str();
 
     UA_String result;
@@ -36,18 +45,18 @@ static UA_StatusCode getService(
     return UA_STATUSCODE_GOOD;
 }
 
-void methodGetService::createMethod(UA_Server* server) {
+void methodGetServiceOfProcess::createMethod(UA_Server* server) {
 
-    char inputText[] = "Get Service";
-    UA_Argument inputArgument = createStringArgument(inputText);
+    char inputServiceName[] = "Servicename + ; + Processname";
+    UA_Argument inputArgument = createStringArgument(inputServiceName);
 
     char outputText[] = "Result";
     UA_Argument outputArgument = createStringArgument(outputText);
 
-    char methodeName[] = "Get Service";
+    char methodeName[] = "Get Service of Process";
     UA_MethodAttributes methodAttributes = createMethodAttributes(methodeName);
 
-    UA_Server_addMethodNode (
+    UA_Server_addMethodNode(
         server, UA_NODEID_STRING(1, methodeName),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),

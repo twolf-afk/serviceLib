@@ -4,8 +4,7 @@
 
 #include <open62541/server.h>
 
-class opcuaServer
-{
+class opcuaServer {
 
 public:
 

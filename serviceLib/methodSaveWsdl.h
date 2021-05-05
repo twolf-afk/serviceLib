@@ -4,8 +4,7 @@
 
 #include "opcuaMethode.h"
 
-class methodSaveWsdl : public opcuaMethode
-{
+class methodSaveWsdl : public opcuaMethode {
 
 public:
 

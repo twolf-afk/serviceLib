@@ -4,8 +4,7 @@
 
 #include "opcuaMethode.h"
 
-class methodGetListOf : public opcuaMethode
-{
+class methodGetListOf : public opcuaMethode {
 
 public:
 

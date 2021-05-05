@@ -6,16 +6,14 @@
 #include "util.h"
 #include "configFileUtil.h"
 
-static UA_StatusCode getList
-(
+static UA_StatusCode getList (
     UA_Server* server, const UA_NodeId* sessionId,
     void* sessionHandle, const UA_NodeId* methodId,
     void* methodContext, const UA_NodeId* objectId,
     void* objectContext, size_t inputSize,
     const UA_Variant* input, size_t outputSize,
-    UA_Variant* output
-)
-{
+    UA_Variant* output) {
+
     logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetListOf).name(), __LINE__, "getList was called");
 
     UA_String* firstInput = (UA_String*)input->data;
@@ -25,26 +23,20 @@ static UA_StatusCode getList
 
     configFileUtil::confParam config = configFileUtil::readConfig();
     std::vector<std::string> files;
-
-    if (listName == "processes")
-    {
+    
+    if (listName == "processes") {
         files = util::getFilesInDirectory(config.pathToProcesses);
     }
-    else if (listName == "services")
-    {
+    else if (listName == "services") {
         files = util::getFilesInDirectory(config.pathToServices);
     }
-    else
-    {
+    else {
         logUtil::writeLogMessageToConsoleAndFile("info", typeid(methodGetListOf).name(), __LINE__, "Unkown listname");
     }
 
     std::string fileList;
-    for (int i = 0; i < files.size(); i++)
-    {
-
+    for (int i = 0; i < files.size(); i++) {
         fileList += files.at(i) + ";";
-
     }
 
     const char* chFileList = fileList.c_str();
@@ -58,11 +50,9 @@ static UA_StatusCode getList
     UA_Variant_setScalarCopy(output, &result, &UA_TYPES[UA_TYPES_STRING]);
 
     return UA_STATUSCODE_GOOD;
-
 }
 
-void methodGetListOf::createMethod(UA_Server* server)
-{
+void methodGetListOf::createMethod(UA_Server* server) {
 
     char inputListName[] = "List of processes or services";
     UA_Argument inputArgument = createStringArgument(inputListName);
@@ -72,10 +62,8 @@ void methodGetListOf::createMethod(UA_Server* server)
 
     char methodeName[] = "Get List of";
     UA_MethodAttributes methodAttributes = createMethodAttributes(methodeName);
-
-
-    UA_Server_addMethodNode
-    (
+    
+    UA_Server_addMethodNode(
         server, UA_NODEID_STRING(1, methodeName),
         UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
         UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
@@ -83,5 +71,4 @@ void methodGetListOf::createMethod(UA_Server* server)
         methodAttributes, &getList,
         1, &inputArgument, 1, &outputArgument, NULL, NULL
     );
-
 }

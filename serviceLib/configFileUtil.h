@@ -5,16 +5,13 @@
 #include <string>
 #include <list>
 
-class configFileUtil
-{
+class configFileUtil {
 
 public:
 
 	struct confParam {
-
 		std::string pathToServices;
 		std::string pathToProcesses;
-
 	};
 
 	static confParam readConfig();
